@@ -1,0 +1,15 @@
+# Ignore dataset files
+allsides_balanced_news_headlines-texts.csv
+processed_dataset.csv
+suggestions.csv
+
+# Ignore scraper from original repo
+Scraper/
+
+# Ignore Python virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+
