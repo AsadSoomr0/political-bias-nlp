@@ -6,6 +6,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
 nltk.download('stopwords')
+nltk.download('punkt_tab')
 nltk.download('punkt')
 nltk.download('wordnet')
 
