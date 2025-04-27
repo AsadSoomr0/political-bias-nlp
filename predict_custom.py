@@ -1,4 +1,3 @@
-
 import joblib
 import re
 import nltk
@@ -6,6 +5,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
+# Download necessary NLTK resources (only needed the first time)
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -32,9 +32,15 @@ while True:
 
     processed_text = preprocess_text(sample_text)
     text_vec = vectorizer.transform([processed_text])
-    
+
     predicted_label = model.predict(text_vec)[0]
     predicted_probs = model.predict_proba(text_vec)[0]
 
+    label_to_prob = dict(zip(model.classes_, predicted_probs))
+
     print(f"\nPredicted Label: {predicted_label}")
-    print(f"Confidence: {max(predicted_probs)*100:.2f}%")
+    print(f"Confidence ({predicted_label}): {label_to_prob[predicted_label]*100:.2f}%")
+
+    print("\nProbabilities:")
+    for label in sorted(model.classes_):
+        print(f"  {label}: {label_to_prob[label]*100:.2f}%")
