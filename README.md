@@ -1,42 +1,115 @@
 # Political Bias Detection Using NLP
 
 ## Overview
-This project applies Natural Language Processing (NLP) techniques to classify political news articles as left-leaning or right-leaning. It utilizes the QBias dataset from [AllSides](https://www.allsides.com/headline-roundups) and a pretrained transformer model for baseline performance evaluation (https://huggingface.co/premsa/political-bias-prediction-allsides-mDeBERTa)
+This project applies Natural Language Processing (NLP) techniques to classify political news articles as **left-leaning**, **right-leaning**, or **center**.  
+We use the [QBias dataset](https://github.com/irgroup/Qbias) from [AllSides](https://www.allsides.com/headline-roundups) to train and evaluate a text classification model.
+
+We experimented with multiple approaches and ultimately developed a **TF-IDF + Logistic Regression** model for final classification.
+
+---
 
 ## Setup Instructions
-1. Clone the repository:
+
+1. **Clone the repository:**
    ```bash
-    git clone https://github.com/AsadSoomr0/political-bias-nlp.git
-    cd political-bias-nlp
+   git clone https://github.com/AsadSoomr0/political-bias-nlp.git
+   cd political-bias-nlp
+   ```
 
-2. Create and activate a virtual environment
+2. **Create and activate a virtual environment:**
+   - On Windows:
+     ```bash
+     python -m venv venv
+     venv\Scripts\activate
+     ```
+   - On Mac/Linux:
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
 
-3. Install dependencies:
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-    pip install -r requirements.txt
+4. **Access the Dataset:**
+   - Download the dataset from:  
+     [AllSides Balanced News Headline Roundups](https://www.allsides.com/headline-roundups)  
+   - Alternatively, use the [QBias GitHub repository](https://github.com/irgroup/Qbias).
+   - Place the CSV (`allsides_balanced_news_headlines-texts.csv`) into the project directory.
 
-4. Accessing the AllSides Dataset:
+---
 
-   
-    This project uses the QBias Dataset, which contains 21,747 news articles labeled as left, right, or center
+## Running the Project
 
-    ### Download the Dataset
-    - The dataset is sourced from the **AllSides Balanced News Headline Roundups**:  
-    [https://www.allsides.com/headline-roundups](https://www.allsides.com/headline-roundups)
-    - The original dataset repository is available on GitHub:  
-    [https://github.com/irgroup/Qbias](https://github.com/irgroup/Qbias)
+### 1. Preprocess the Dataset
+This script cleans and prepares the text data for model training.
 
-    ### Place the CSV in the Project Directory
-    After downloading, move the dataset into the project folder and rename it if needed.
+```bash
+python preprocess.py
+```
 
-    ## Running the Baseline Model
-    Once the dataset is in place, you can continue
+### 2. Train the Model
+This script trains a Logistic Regression model on the preprocessed text.
 
-5. Run preprocessing:
+```bash
+python train_model.py
+```
 
-    python preprocess.py
+The trained model and TF-IDF vectorizer will be saved locally.
 
-6. Run the baseline model:
+### 3. Evaluate the Model
+This script evaluates the trained model on the full dataset.
 
-    python baseline_model.py
+```bash
+python predict_model.py
+```
 
+You will see a classification report showing precision, recall, and F1 scores for left, right, and center articles.
+
+### 4. Predict Custom Text
+You can test the model by entering your own article snippets.
+
+```bash
+python predict_custom.py
+```
+
+Example:
+
+```
+Enter a political article snippet (or type 'exit' to quit):
+> The government must expand social welfare programs to help families.
+Predicted Label: left
+Confidence: 68.4%
+```
+
+---
+
+## Notes
+- Our final model uses **TF-IDF embeddings** (unigrams + bigrams) with a **Logistic Regression** classifier.
+- The model classifies text into **left**, **right**, or **center** categories.
+- Preprocessing includes lowercasing, punctuation removal, stopword removal, tokenization, and lemmatization.
+
+---
+
+## Repository Structure
+
+```
+├── baseline_model.py          # (old baseline, not primary focus)
+├── baseline_model_metal.py     # (MacOS version of baseline)
+├── explore_dataset.py          # Exploratory data analysis
+├── preprocess.py               # Dataset cleaning and preprocessing
+├── train_model.py              # TF-IDF + Logistic Regression model training
+├── predict_model.py            # Evaluate the trained model
+├── predict_custom.py           # Predict on user-input text
+├── requirements.txt
+├── README.md
+└── processed_dataset.csv       # (after you run preprocess.py)
+```
+
+---
+
+## Acknowledgments
+- [QBias Dataset](https://github.com/irgroup/Qbias)
+- [AllSides Balanced News Headlines](https://www.allsides.com/headline-roundups)
